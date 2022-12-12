@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
-import json
 
 from datetime import date, datetime
 import time
 
-import urllib, json
+import requests, urllib, json
 from dotenv import dotenv_values
 config = dotenv_values("./.env")
 
@@ -46,6 +45,7 @@ featured_match_oc1 = db['featured_match_oc1']
 featured_match_tr1 = db['featured_match_tr1']
 featured_match_jp1 = db['featured_match_jp1']
 featured_match_kr = db['featured_match_kr']
+
 # featured_match.drop()
 
 # featured_match.delete_many({})
@@ -77,8 +77,8 @@ While 1 > 0: THEN ...
 """
 
 while 1 > 0:
-   time.sleep(30)
-   
+   time.sleep(60)
+
    for region_idx in range(len(list_regions)):
       
       time.sleep(1)
@@ -95,3 +95,4 @@ while 1 > 0:
             {'$set' : list_records_featured_match[record_idx]},
             upsert=True
          )
+         
