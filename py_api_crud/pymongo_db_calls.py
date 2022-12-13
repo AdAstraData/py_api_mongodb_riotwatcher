@@ -95,4 +95,3 @@ while 1 > 0:
             {'$set' : list_records_featured_match[record_idx]},
             upsert=True
          )
-         

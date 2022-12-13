@@ -93,22 +93,31 @@ list_colls_match_timeline = [
 Fetch list of gameId per server from featured_match and API call GET match_timeline for each (if not already present in match_timeline)
 """
 
+
 for region_idx in range(len(list_regions)):
-      
-    print(list_regions[region_idx])
+
+    count = 1
 
     list_records_gameId = list_colls_featured_match[region_idx].find({}, {'gameId':1, 'platformId':1})
 
     for record_id in list_records_gameId:
         
-        time.sleep(5)
+        time.sleep(1)
         var_match_id = str(record_id['platformId'])+"_"+str(record_id['gameId'])
-        print(var_match_id)
+        print(list_regions[region_idx], count, var_match_id)
 
-        record_match_timeline = watcher.match.timeline_by_match(region=list_regions[region_idx],match_id=var_match_id)
+        try:
+            record_match_timeline = watcher.match.timeline_by_match(region=list_regions[region_idx],match_id=var_match_id)
+        except:
+            pass
+        else:
+            record_match_timeline = watcher.match.timeline_by_match(region=list_regions[region_idx],match_id=var_match_id)
 
-        list_colls_match_timeline[region_idx].update_one(
-            {'matchId' : record_match_timeline['metadata']['matchId']},
-            {'$set' : record_match_timeline},
-            upsert=True
-        )
+            ### extract info from record and re-process it to optimally use MongoDB Atlas available logical disk space
+            list_colls_match_timeline[region_idx].update_one(
+                {'matchId' : record_match_timeline['metadata']['matchId']},
+                {'$set' : record_match_timeline},
+                upsert=True
+            )
+        
+        count += 1
