@@ -114,6 +114,7 @@ for region_idx in range(len(list_regions)):
             record_match_timeline = watcher.match.timeline_by_match(region=list_regions[region_idx],match_id=var_match_id)
 
             ### extract info from record and re-process it to optimally use MongoDB Atlas available logical disk space
+            ### match outcome, teams, champions used, items bought, wards place, destroyed, ... 
             list_colls_match_timeline[region_idx].update_one(
                 {'matchId' : record_match_timeline['metadata']['matchId']},
                 {'$set' : record_match_timeline},
